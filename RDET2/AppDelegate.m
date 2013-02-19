@@ -3,7 +3,7 @@
 //  RDET2
 //
 //  Created by Pete Johnson on 2/18/13.
-//  Copyright __MyCompanyName__ 2013. All rights reserved.
+//  Copyright AppsWithHeart 2013. All rights reserved.
 //
 
 #import "cocos2d.h"
