@@ -121,7 +121,7 @@
             CCAction *currentAction = [self processActions:childDict];
             [actionsArray addObject:currentAction];
         }
-        return [CCSpawn actionsWithArray:actionsArray];
+        return [CCSpawn actionWithArray:actionsArray];
     } else if ([actionType isEqualToString:@"Sequence"]) {
         //NSLog(@"Action processing a %@", actionType);
         NSArray *childArray = [action objectForKey:@"ChildActions"];
@@ -130,7 +130,7 @@
             CCAction *currentAction = [self processActions:childDict];
             [actionsArray addObject:currentAction];
         }
-        return [CCSequence actionsWithArray:actionsArray];
+        return [CCSequence actionWithArray:actionsArray];
     }
     
     // Now the atomic ones
@@ -299,14 +299,14 @@
 //onEnter
 - (void)onEnter
 {
-    [[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
+    [[[CCDirector sharedDirector] touchDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
     [super onEnter];
 }
 
 //onExit
 - (void)onExit
 {
-    [[CCTouchDispatcher sharedDispatcher] removeDelegate:self];
+    [[[CCDirector sharedDirector] touchDispatcher] removeDelegate:self];
     [super onExit];
 }
 

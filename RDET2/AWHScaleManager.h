@@ -17,6 +17,8 @@
 {
     BOOL iPad;
     BOOL retina;
+    float width;
+    float height;
 }
 +(id)sharedScaleManager;
 -(CGPoint)scalePointX:(float)x andY:(float)y; 

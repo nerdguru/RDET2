@@ -26,9 +26,9 @@
         [self initSpritesArray];
         
         // Temporary restart menu
-        CCMenuItemFont *item1 = [CCMenuItemFont itemFromString: @"Start Over" target:self selector:@selector(startOver)];
+        CCMenuItemFont *item1 = [CCMenuItemFont itemWithString: @"Start Over" target:self selector:@selector(startOver)];
         item1.color = ccWHITE;
-        CCMenuItemFont *item2 = [CCMenuItemFont itemFromString: @"Next Level" target:self selector:@selector(nextLevel)];
+        CCMenuItemFont *item2 = [CCMenuItemFont itemWithString: @"Next Level" target:self selector:@selector(nextLevel)];
         item2.color = ccWHITE;
         item2.position = ccp(0, -50);
 		CCMenu *menu = [CCMenu menuWithItems: item1, item2, nil];

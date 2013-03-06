@@ -52,6 +52,13 @@
             iPad = YES;
             NSLog(@"iPad: YES");
         }
+        
+        // Get dimensions accounting for autorotation
+        CGSize size = [[CCDirector sharedDirector] winSize];
+        width = size.height;
+        NSLog( @"Width: %f", width);
+        height = size.width;
+        NSLog( @"Height: %f", height);
 	}
 	return self;
 }
@@ -60,16 +67,40 @@
 // in the centered letterbox
 -(CGPoint)scalePointX:(float)x andY:(float)y {
     if (!iPad)
-        return ccp(x,y);
+        // Regardless of actual height/width iPhone base coords in Cocos2d is 480x320
+        return ccp(x+(width-480)/2,y + (height-320)/2);
+    else {
+        // Regardless of actual height/width iPad base coords in Cocos2d is 960x640
+        float xOffset = (width - 960) / 2;
+        float yOffset = (height - 640) / 2;
+        return ccp(2*x+xOffset, 2*y+yOffset);
+    }
     
-    CGSize size = [[CCDirector sharedDirector] winSize];
-    float xOffset = (size.width - 960) / 2;
-    float yOffset = (size.height - 640) / 2;
+    /*
+     
+     NSLog(@"X: %f", x);
+     NSLog(@"Y: %f", y);
+     NSLog( @"Width: %f", width);
+     NSLog( @"Height: %f", height);
+     
+    // First detect the original 3.5" iPhone case
+    if((width == 480) && (height == 320))
+       return ccp(x,y);
+    
+    // 4" iPhone case
+    if(height == 320) {
+        NSLog(@"Width = 480 case");
+       return ccp(x+(width-480)/2,y + (height-320)/2);
+    }
+     CGSize size = [[CCDirector sharedDirector] winSize];
+      */ 
+    
+    
     //NSLog(@"xOffset: %f", xOffset);
     //NSLog(@"yOffset: %f", yOffset);
     //NSLog(@"2*x+xOffset: %f", 2*x+xOffset);
     //NSLog(@"2*y+yOffset: %f", 2*y+yOffset);
-    return ccp(2*x+xOffset, 2*y+yOffset);
+    
 }
 
 // Enforces font size scaling for iPad vs iPhone
@@ -86,7 +117,7 @@
     if (!iPad)
         retval =  0.50;
     
-    //NSLog(@"scaleImage: %f", retval);
+    NSLog(@"scaleImage: %f", retval);
     return retval;
     
 }

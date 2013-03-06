@@ -46,6 +46,7 @@
     // Create autorelease objects
     CCScene *scene = [CCScene node];
     AWHHomeLayer *layer = [[AWHHomeLayer alloc] initWithDict:levelDict];
+    
     [scene addChild: layer];
     [layer release];
 	

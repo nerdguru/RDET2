@@ -85,7 +85,7 @@
             [actionsArray addObject:[CCCallFunc actionWithTarget:self selector:@selector(toggleColor)]];
             cumulativeTime =intervalFloat;
         }
-        [self runAction:[CCSequence actionsWithArray:actionsArray]];
+        [self runAction:[CCSequence actionWithArray:actionsArray]];
 
     }
     return self;

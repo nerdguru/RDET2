@@ -45,7 +45,8 @@
     }        
 
     return [self
-            animationWithFrames:animFrames
+            animationWithSpriteFrames:animFrames
+            //animationWithFrames:animFrames
             delay:delay];
 }
 

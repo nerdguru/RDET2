@@ -13,8 +13,9 @@
 
 +(id) actionWithSpriteSequence:(NSString*)nameFormat numFrames:(int)numFrames delay:(float)delay restoreOriginalFrame:(BOOL)restoreOriginalFrame
 {
-    return [self actionWithAnimation:[CCAnimation animationWithSpriteSequence:nameFormat numFrames:numFrames delay:delay] 
-                restoreOriginalFrame:restoreOriginalFrame];
+    //return [self  actionWithAnimation:[CCAnimation animationWithSpriteSequence:nameFormat numFrames:numFrames delay:delay] restoreOriginalFrame:restoreOriginalFrame];
+    return [self actionWithAnimation:[CCAnimation animationWithSpriteSequence:nameFormat numFrames:numFrames delay:delay]];
+                
 }
 
 @end
