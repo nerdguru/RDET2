@@ -41,24 +41,31 @@
             NSLog(@"retina: NO");
         }
         
-        //and now we grab the device model 
+        // Get dimensions accounting for autorotation
+        CGSize size = [[CCDirector sharedDirector] winSize];
+        screenWidth = size.height;
+        screenHeight = size.width;
+        
+        //and now we grab the device model and compute padding widths assuming aspect ratios stay constant
         NSString* valueDevice = [[UIDevice currentDevice] model];
         if ([valueDevice rangeOfString:@"iPad"].location == NSNotFound)  
-            //Test to see if our valueDevice NSString does not contains the substring iPad & if it does not it is an iPhone otherwise it is an iPad             
+        //Test to see if our valueDevice NSString does not contains the substring iPad & if it does not it is an iPhone otherwise it is an iPad             
         {
             iPad = NO;
             NSLog(@"iPad: NO");
+            paddingWidth = (screenWidth-480)/2;
+            paddingHeight = (screenHeight-320)/2;
         } else {
             iPad = YES;
             NSLog(@"iPad: YES");
+            paddingWidth = (screenWidth - 960) / 2;
+            paddingHeight = (screenHeight - 640) / 2;
         }
         
-        // Get dimensions accounting for autorotation
-        CGSize size = [[CCDirector sharedDirector] winSize];
-        width = size.height;
-        NSLog( @"Width: %f", width);
-        height = size.width;
-        NSLog( @"Height: %f", height);
+        NSLog( @"Width: %f", screenWidth);
+        NSLog( @"Padding Width: %f", paddingWidth);
+        NSLog( @"Height: %f", screenHeight);
+        NSLog( @"Padding Height: %f", paddingHeight);
 	}
 	return self;
 }
@@ -68,39 +75,11 @@
 -(CGPoint)scalePointX:(float)x andY:(float)y {
     if (!iPad)
         // Regardless of actual height/width iPhone base coords in Cocos2d is 480x320
-        return ccp(x+(width-480)/2,y + (height-320)/2);
+        return ccp(x+paddingWidth,y + paddingHeight);
     else {
         // Regardless of actual height/width iPad base coords in Cocos2d is 960x640
-        float xOffset = (width - 960) / 2;
-        float yOffset = (height - 640) / 2;
-        return ccp(2*x+xOffset, 2*y+yOffset);
+        return ccp(2*x+paddingWidth, 2*y+paddingHeight);
     }
-    
-    /*
-     
-     NSLog(@"X: %f", x);
-     NSLog(@"Y: %f", y);
-     NSLog( @"Width: %f", width);
-     NSLog( @"Height: %f", height);
-     
-    // First detect the original 3.5" iPhone case
-    if((width == 480) && (height == 320))
-       return ccp(x,y);
-    
-    // 4" iPhone case
-    if(height == 320) {
-        NSLog(@"Width = 480 case");
-       return ccp(x+(width-480)/2,y + (height-320)/2);
-    }
-     CGSize size = [[CCDirector sharedDirector] winSize];
-      */ 
-    
-    
-    //NSLog(@"xOffset: %f", xOffset);
-    //NSLog(@"yOffset: %f", yOffset);
-    //NSLog(@"2*x+xOffset: %f", 2*x+xOffset);
-    //NSLog(@"2*y+yOffset: %f", 2*y+yOffset);
-    
 }
 
 // Enforces font size scaling for iPad vs iPhone
@@ -117,7 +96,7 @@
     if (!iPad)
         retval =  0.50;
     
-    NSLog(@"scaleImage: %f", retval);
+    //NSLog(@"scaleImage: %f", retval);
     return retval;
     
 }
@@ -175,30 +154,28 @@
     AWHGameStateManager *gameStateManager = [AWHGameStateManager sharedGameStateManager];
     if ([dim isEqualToString:@"E"]) {
         if (!iPad)
-            retval = 480;
+             retval = 480 + paddingWidth;
         else {
-            retval = 480 + (512-480)/2;
+            retval = 480 + paddingWidth/2;
         }
     } else if ([dim isEqualToString:@"E+"]) {
         if (!iPad)
-            retval = 480 + [sprite boundingBox].size.width/2;
+            retval = 480 + paddingWidth + [sprite boundingBox].size.width/2;
         else {
-            retval = 480 + (512-480)/2 + [sprite boundingBox].size.width/4;      
+            retval = 480 + paddingWidth/2 + [sprite boundingBox].size.width/4;      
         }
-        //NSLog(@"In Convert Dimension E+: %f width: %f", retval, [sprite boundingBox].size.width);
     } else if ([dim isEqualToString:@"W"]) {
         if (!iPad)
-            retval = 0;
+            retval = -1 * paddingWidth;
         else {
-            retval = -1 * (512-480)/2;
+            retval = -1 * paddingWidth/2;
         }
     } else if ([dim isEqualToString:@"W-"]) {
         if (!iPad)
-            retval = 0 - [sprite boundingBox].size.width/2;
+            retval = -1 * paddingWidth - [sprite boundingBox].size.width/2;
         else {
-            retval = -1 * (512-480)/2 - [sprite boundingBox].size.width/2;
+            retval = -1 * paddingWidth/2 - [sprite boundingBox].size.width/2;
         }
-        //NSLog(@"In Convert Dimension W-: %f width: %f", retval, [sprite boundingBox].size.width);
     } else if ([dim isEqualToString:@"RandomY"]) {
         int w=[sprite textureRect].size.width/2;
         int h=[sprite textureRect].size.height/2;
@@ -219,9 +196,8 @@
         }
     } else if ([dim isEqualToString:@"EScroll"]) {
         int numTiles = [self computeNumHorizTiles:[sprite boundingBox].size.width];
-        CGSize size = [[CCDirector sharedDirector] winSize];
-        retval = numTiles*[sprite boundingBox].size.width - size.width;
-        //NSLog(@"Numtiles: %d WinWidth %f SpriteWidth: %f Delta %f", numTiles, size.width, [sprite boundingBox].size.width, retval);
+        retval = numTiles*[sprite boundingBox].size.width - screenWidth;
+        NSLog(@"Numtiles: %d WinWidth %f SpriteWidth: %f Delta %f", numTiles, screenWidth, [sprite boundingBox].size.width, retval);
         if (!iPad)
             retval = 480 + [sprite boundingBox].size.width-retval*2-2;
         else {
@@ -270,9 +246,8 @@
 
 -(int)computeNumHorizTiles:(float)width {
     int retval = 0;
-    CGSize size = [[CCDirector sharedDirector] winSize];
-    retval = size.width/width;
-    //NSLog(@"Sprite Width: %f Win width: %f Retval: %d", width, size.width, retval);
+    retval = screenWidth/width;
+    NSLog(@"Sprite Width: %f Win width: %f Retval: %d", width, screenWidth, retval+1);
     return retval+1;
 }
 

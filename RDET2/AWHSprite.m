@@ -144,7 +144,12 @@
     }
     else if ([actionType isEqualToString:@"Rotate"]) {
         //NSLog(@"Action processing a %@", actionType);
-        return [CCRotateBy actionWithDuration:[[action objectForKey:@"Duration"] floatValue] angle:[[action objectForKey:@"Angle"] floatValue]];
+        if(duration == 0)
+            // Not also moving in parallel
+            return [CCRotateBy actionWithDuration:[[action objectForKey:@"Duration"] floatValue] angle:[[action objectForKey:@"Angle"] floatValue]];
+        else
+            // Moving in parallel, duration computed
+            return [CCRotateBy actionWithDuration:duration angle:[[action objectForKey:@"Angle"] floatValue]];
     }
     else if ([actionType isEqualToString:@"ScaleBy"]) {
         //NSLog(@"Action processing a %@", actionType);
@@ -179,7 +184,7 @@
         }
     
         // Compute the duration and create the sprite
-        float duration;
+        //float duration;
         if ([action objectForKey:@"Duration"]) {
             duration = [[action objectForKey:@"Duration"] floatValue ];
         } else {
@@ -253,7 +258,8 @@
     if (self) {
         
         // Initialize the sprite with data from the dict and with the help of the scaleManager
-        AWHScaleManager *scaleManager = [AWHScaleManager sharedScaleManager]; 
+        AWHScaleManager *scaleManager = [AWHScaleManager sharedScaleManager];
+        duration = 0;
         fileName = [spriteDict objectForKey:@"Name"];
         self.mySprite=[CCSprite spriteWithSpriteFrameName:fileName];
         mySprite.scale = [scaleManager scaleImage];

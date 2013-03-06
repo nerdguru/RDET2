@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RDET2/AWHScaleManager.m"
-         timestampString = "384223797.861577"
+         timestampString = "384246505.813005"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "45"
-         endingLineNumber = "45"
+         startingLineNumber = "50"
+         endingLineNumber = "50"
          landmarkName = "-init"
          landmarkType = "5">
       </FileBreakpoint>
@@ -21,11 +21,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "RDET2/AWHScaleManager.m"
-         timestampString = "384225369.55881"
+         timestampString = "384246505.813005"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "63"
-         endingLineNumber = "63"
+         startingLineNumber = "70"
+         endingLineNumber = "70"
          landmarkName = "-init"
          landmarkType = "5">
       </FileBreakpoint>

@@ -17,6 +17,7 @@
     int value;
     BOOL beenEaten;
     NSString* fileName;
+    float duration;
 }
 @property (nonatomic, retain) CCSprite *mySprite;
 -(id)initWithDict:(NSDictionary *)spriteDict;
