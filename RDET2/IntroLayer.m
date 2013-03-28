@@ -3,21 +3,25 @@
 //  RDET2
 //
 //  Created by Pete Johnson on 2/18/13.
-//  Copyright __MyCompanyName__ 2013. All rights reserved.
+//  Copyright AppsWithHeart 2013. All rights reserved.
 //
+// NOTE With the upgrade to Cocos2d 2.0 this IntroLayer
+// is needed to intiate the engine so that the menu screen
+// background sets up correctly
 
 
 // Import the interfaces
 #import "IntroLayer.h"
 #import "HelloWorldLayer.h"
+#import "AWHGameStateManager.h"
+
 
 
 #pragma mark - IntroLayer
 
-// HelloWorldLayer implementation
 @implementation IntroLayer
 
-// Helper class method that creates a Scene with the HelloWorldLayer as the only child.
+// Helper class method that creates a Scene with the IntroLayer as the only child.
 +(CCScene *) scene
 {
 	// 'scene' is an autorelease object.
@@ -55,11 +59,11 @@
 	[self addChild: background];
 	
 	// In one second transition to the new scene
-	[self scheduleOnce:@selector(makeTransition:) delay:1];
+	[self scheduleOnce:@selector(makeTransition:) delay:1.5];
 }
 
 -(void) makeTransition:(ccTime)dt
 {
-	[[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:1.0 scene:[HelloWorldLayer scene] withColor:ccWHITE]];
+    [[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:1.0 scene:[AWHGameStateManager scene] withColor:ccWHITE]];
 }
 @end

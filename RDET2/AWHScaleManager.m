@@ -43,8 +43,8 @@
         
         // Get dimensions accounting for autorotation
         CGSize size = [[CCDirector sharedDirector] winSize];
-        screenWidth = size.height;
-        screenHeight = size.width;
+        screenWidth = size.width;
+        screenHeight = size.height;
         
         //and now we grab the device model and compute padding widths assuming aspect ratios stay constant
         NSString* valueDevice = [[UIDevice currentDevice] model];
@@ -199,9 +199,11 @@
         retval = numTiles*[sprite boundingBox].size.width - screenWidth;
         NSLog(@"Numtiles: %d WinWidth %f SpriteWidth: %f Delta %f", numTiles, screenWidth, [sprite boundingBox].size.width, retval);
         if (!iPad)
-            retval = 480 + [sprite boundingBox].size.width-retval*2-2;
+            retval = screenWidth + [sprite boundingBox].size.width-retval*2-2;
+            //retval = screenWidth + [sprite boundingBox].size.width + retval;
         else {
-            retval = 496 + [sprite boundingBox].size.width-retval+6;
+            retval = screenWidth + [sprite boundingBox].size.width-retval+6;
+            //retval = screenWidth + [sprite boundingBox].size.width + retval;
         
 
         }
@@ -252,9 +254,9 @@
 }
 
 -(float)pointsFromRightBoundary:(float)width n:(int)n {
-    float retval = 480-width/2-n*width+n+1;
+    float retval = screenWidth - width/2-n*width+n+1;
     if(iPad)
-        retval = 496 -width/4-n*width/2+n+1;
+        retval = screenWidth - width/4-n*width/2+n+1;
     return retval;
 }
 

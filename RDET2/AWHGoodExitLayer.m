@@ -42,7 +42,8 @@
 }
 -(void)firstDelay {
     [self unschedule:@selector(firstDelay)];
-    [self schedule:@selector(addTotal) interval:scoreInterval];
+    if(gameStateManager.levelScore > 0)
+        [self schedule:@selector(addTotal) interval:scoreInterval];
 }
 -(void)gotoGameOver {
     [self unschedule:@selector(gotoGameOver)];
