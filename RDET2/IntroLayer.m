@@ -64,6 +64,8 @@
 
 -(void) makeTransition:(ccTime)dt
 {
-    [[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:1.0 scene:[AWHGameStateManager scene] withColor:ccWHITE]];
+    //[[CCDirector sharedDirector] replaceScene:[CCTransitionFade transitionWithDuration:1.0 scene:[AWHGameStateManager scene] withColor:ccWHITE]];
+    CCScene *homeScene = [AWHGameStateManager scene];
+    [[CCDirector sharedDirector] replaceScene:homeScene];
 }
 @end

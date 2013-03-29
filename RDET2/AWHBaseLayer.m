@@ -61,7 +61,8 @@
             AWHSprite *tiledSprite=[[AWHSprite alloc] initWithDict:tiledBackgroundDict];
             [self addChild:tiledSprite z:0];
             
-            for (int loopVar = 0; loopVar < [scaleManager computeNumHorizTiles:[tiledSprite.mySprite boundingBox].size.width]; loopVar++) {
+            int numTiles = [scaleManager computeNumHorizTiles:[tiledSprite.mySprite boundingBox].size.width];
+            for (int loopVar = -1; loopVar < numTiles; loopVar++) {
                 float x = [scaleManager pointsFromRightBoundary:[tiledSprite.mySprite boundingBox].size.width n:loopVar];
                 NSMutableDictionary* tileDict = [[NSMutableDictionary alloc] initWithObjectsAndKeys:
                                                  [tiledBackgroundDict objectForKey:@"Name"], @"Name",
@@ -71,7 +72,7 @@
                                                  nil];
                 
                 AWHSprite *tile=[[AWHSprite alloc] initWithDict:tileDict];
-                //NSLog(@"Dict: %@", tileDict);
+                NSLog(@"Dict: %@", tileDict);
                 [self addChild:tile z:0];
                 [tileDict release];
                 [tile release];

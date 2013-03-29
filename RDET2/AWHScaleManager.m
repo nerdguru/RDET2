@@ -195,19 +195,19 @@
             retval = sprite.position.y/2 - 32;
         }
     } else if ([dim isEqualToString:@"EScroll"]) {
+        // First, compute the right side of the leftmost tile
         int numTiles = [self computeNumHorizTiles:[sprite boundingBox].size.width];
-        retval = numTiles*[sprite boundingBox].size.width - screenWidth;
-        NSLog(@"Numtiles: %d WinWidth %f SpriteWidth: %f Delta %f", numTiles, screenWidth, [sprite boundingBox].size.width, retval);
-        if (!iPad)
-            retval = screenWidth + [sprite boundingBox].size.width-retval*2-2;
-            //retval = screenWidth + [sprite boundingBox].size.width + retval;
-        else {
-            retval = screenWidth + [sprite boundingBox].size.width-retval+6;
-            //retval = screenWidth + [sprite boundingBox].size.width + retval;
-        
-
+        int rsideLeftMostTile;
+        if(!iPad)
+        {
+            rsideLeftMostTile = [self pointsFromRightBoundary:[sprite boundingBox].size.width n:numTiles-1] + [sprite boundingBox].size.width/2;
+            retval = [self pointsFromRightBoundary:[sprite boundingBox].size.width n:-1] - rsideLeftMostTile + [sprite boundingBox].size.width - paddingWidth;
         }
-        //NSLog(@"E-Scroll %f", retval);
+        else {
+            rsideLeftMostTile = [self pointsFromRightBoundary:[sprite boundingBox].size.width n:numTiles-1] + [sprite boundingBox].size.width/2;
+            retval = [self pointsFromRightBoundary:[sprite boundingBox].size.width n:-1] - rsideLeftMostTile + [sprite boundingBox].size.width/2 - paddingWidth/2 -1;
+        }
+        NSLog(@"E-Scroll %f", retval);
     } else {
         // Assume it's a number
         retval = [dim floatValue];
@@ -223,17 +223,11 @@
         float speedFloat = [speed floatValue];
         
         // Compute Distance
-        //CGPoint finish = ccp(x,y);
         CGPoint finish;
         CGPoint start;
-     //   if(iPad) {
-            start = ccp(fx,fy);
-            finish = [self scalePointX:tx andY:ty];
-      //  }
-     //   else {
-     //       start = [self scalePointX:fx andY:fy];
-     //       finish = [self scalePointX:tx andY:ty];
-    //    }
+        start = ccp(fx,fy);
+        finish = [self scalePointX:tx andY:ty];
+
         float distance = ccpDistance(start, finish); 
         //NSLog(@"Speed: %f Distance: %f Duration: %f", speedFloat, distance, distance/speedFloat);
         //NSLog(@"Start x:%f y:%f  Finish x:%f y:%f", start.x, start.y, finish.x, finish.y);
@@ -256,7 +250,7 @@
 -(float)pointsFromRightBoundary:(float)width n:(int)n {
     float retval = screenWidth - width/2-n*width+n+1;
     if(iPad)
-        retval = screenWidth - width/4-n*width/2+n+1;
+        retval = screenWidth/2 - width/4-n*width/2+n+1;
     return retval;
 }
 
